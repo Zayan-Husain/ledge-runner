@@ -25,10 +25,10 @@ class player extends yentity {
   move() {
     var t = this;
     var g = t.hit_test("ground", 0, 0);
-    if (keyDown("A")) {
+    if (keyDown("A") || mouseX < t.x) {
       t.speedx -= t.speed;
     }
-    if (keyDown("D")) {
+    if (keyDown("D") || mouseX > t.x) {
       t.speedx += t.speed;
     }
     if (keyWentUp("A") || keyWentUp("D")) {
@@ -36,7 +36,7 @@ class player extends yentity {
     }
     if (g) {
       t.speedy = 0;
-      t.sy(g.y - g.hitbh+3);
+      t.sy(g.y - g.hitbh + 3);
     } else {
       t.speedy += t.gravity;
     }
@@ -81,6 +81,6 @@ class player extends yentity {
     if (t.x < t.w / 2) {
       t.sx(t.w / 2);
     }
-  } //end boundaries
+  } //end boundaries()
 } //end class
 ///////////////end player///////////////////

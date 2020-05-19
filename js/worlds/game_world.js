@@ -5,6 +5,8 @@ class game_world extends world {
     this.wh = wh2;
     this.ledgeSpeed = 2;
     this.score = 0;
+    this.ledgeSpeedTimer = new ytimer(300);
+    this.maxLedgeSpeed = 12;
   }
 
   init() {
@@ -17,6 +19,7 @@ class game_world extends world {
     var t = this;
     t.spawnLedge();
     t.score++;
+    t.levelProgression();
   }
   render() {
     super.render();
@@ -28,33 +31,34 @@ class game_world extends world {
     if (t.ledgeTimer.finished()) {
       var r = Math.random() * 3;
       var last_l;
-	  for (let i = 0; i < r; i++) {
-        var w = Math.random() * ((t.wh.w-20) / 2) + 40;
+      for (let i = 0; i < r; i++) {
+        var w = Math.random() * ((t.wh.w - 20) / 2) + 40;
         var x = Math.random() * t.wh.w;
         var l = new ground(x, t.wh.h + 20);
         l.speed = t.ledgeSpeed;
         l.cwh(w);
-        
-		if(last_l && last_l.x> l.x)
-		{
-			t.remove(last_l);
-		}
-		
-		t.add(l);
-		
-		if(l.hit_test("ground",0,0)){t.remove(l);}
-		
-		last_l = l;
+
+        if (last_l && last_l.x > l.x) {
+          t.remove(last_l);
+        }
+
+        t.add(l);
+
+        if (l.hit_test("ground", 0, 0)) {
+          t.remove(l);
+        }
+
+        last_l = l;
       } //end loop
     } //end if
   } //end spawnLedge()
   levelProgression() {
     var t = this;
-    if (t.score == 500) {
-      t.ledgeSpeed += 2;
-    }
-    if (t.score == 1000) {
-      t.ledgeSpeed += 2;
+    if (this.ledgeSpeedTimer.finished()) {
+      this.ledgeSpeed += 0.5;
+      if (this.ledgeSpeed > this.maxLedgeSpeed) {
+        this.ledgeSpeed = this.maxLedgeSpeed;
+      }
     }
   }
 }

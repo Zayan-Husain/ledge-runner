@@ -8,7 +8,7 @@ class player extends yentity {
     this.speed = 0.1;
     this.speedx = 0;
     this.speedy = 0;
-    this.gravity = 0.3;
+    this.gravity = 1.6;
     this.vf = 0.5;
     this.hf = 0.95;
   } //end constructor
@@ -36,7 +36,7 @@ class player extends yentity {
     }
     if (g) {
       t.speedy = 0;
-      t.sy(g.y - 30);
+      t.sy(g.y - g.hitbh+3);
     } else {
       t.speedy += t.gravity;
     }

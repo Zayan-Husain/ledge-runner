@@ -3,7 +3,7 @@ class game_world extends world {
     super(name2);
     this.ledgeTimer = new ytimer(50);
     this.wh = wh2;
-    this.ledgeSpeed = 5;
+    this.ledgeSpeed = 2;
     this.score = 0;
   }
 
@@ -27,13 +27,24 @@ class game_world extends world {
     var t = this;
     if (t.ledgeTimer.finished()) {
       var r = Math.random() * 3;
-      for (let i = 0; i < r; i++) {
-        var w = Math.random() * (t.wh.w / 2) + 40;
+      var last_l;
+	  for (let i = 0; i < r; i++) {
+        var w = Math.random() * ((t.wh.w-20) / 2) + 40;
         var x = Math.random() * t.wh.w;
         var l = new ground(x, t.wh.h + 20);
         l.speed = t.ledgeSpeed;
         l.cwh(w);
-        t.add(l);
+        
+		if(last_l && last_l.x> l.x)
+		{
+			t.remove(last_l);
+		}
+		
+		t.add(l);
+		
+		if(l.hit_test("ground",0,0)){t.remove(l);}
+		
+		last_l = l;
       } //end loop
     } //end if
   } //end spawnLedge()

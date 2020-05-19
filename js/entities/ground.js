@@ -2,7 +2,7 @@
 class ground extends yentity {
   constructor(x2, y2, g) {
     super(x2, y2, g);
-    this.speed = 4;
+    this.speed = 2;
     this.type = "ground";
     this.grafic_type = "none";
   } //end constructor
@@ -11,6 +11,7 @@ class ground extends yentity {
     super.update();
     var t = this;
     t.move();
+
   } //end update
   move() {
     var t = this;

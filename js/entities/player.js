@@ -21,14 +21,26 @@ class player extends yentity {
     t.adjustPosY();
     t.loseCondition();
     t.boundaries();
+    console.log(t.world.isSmartphone);
   } //end update
   move() {
     var t = this;
     var g = t.hit_test("ground", 0, 0);
-    if (keyDown("A") || mouseX < t.x) {
+    if (t.world.isSmartphone) {
+      if (mouseX < t.x) {
+        //A
+        t.speedx -= t.speed;
+      }
+      if (mouseX > 0) {
+        //D
+        t.speedx += t.speed;
+      }
+      console.log(t.world.isSmartphone);
+    }
+    if (keyDown("A")) {
       t.speedx -= t.speed;
     }
-    if (keyDown("D") || mouseX > t.x) {
+    if (keyDown("D")) {
       t.speedx += t.speed;
     }
     if (keyWentUp("A") || keyWentUp("D")) {

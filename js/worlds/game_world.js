@@ -7,12 +7,18 @@ class game_world extends world {
     this.score = 0;
     this.ledgeSpeedTimer = new ytimer(300);
     this.maxLedgeSpeed = 12;
+    this.isSmartphone = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+    // this.coinTimer = new ytimer(120);
   }
 
   init() {
     super.init();
     var p = new player(this.wh.w / 2, 20);
     this.add(p);
+    var c = new coin();
+    this.add(c);
   }
   update() {
     super.update();

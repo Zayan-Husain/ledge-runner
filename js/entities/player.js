@@ -21,7 +21,6 @@ class player extends yentity {
     t.adjustPosY();
     t.loseCondition();
     t.boundaries();
-    console.log(t.world.isSmartphone);
   } //end update
   move() {
     var t = this;
@@ -82,6 +81,8 @@ class player extends yentity {
   loseCondition() {
     var t = this;
     if (t.y < -10 || t.y > t.world.wh.h + 10) {
+      console.log(t.y);
+      console.log(t.x);
       t.world.change_world("game_over", true);
     }
   } //end lose condition

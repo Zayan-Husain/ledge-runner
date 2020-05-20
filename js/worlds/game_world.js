@@ -5,16 +5,18 @@ class game_world extends world {
     this.wh = wh2;
     this.ledgeSpeed = 2;
     this.score = 0;
-    this.ledgeSpeedTimer = new ytimer(300);
+    this.ledgeSpeedTimer = new ytimer(800);
     this.maxLedgeSpeed = 12;
     this.isSmartphone = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     );
-    // this.coinTimer = new ytimer(120);
+    this.coinTimer = new ytimer(600);
   }
 
   init() {
     super.init();
+    this.entitys = [];
+    this.score = 0;
     var p = new player(this.wh.w / 2, 20);
     this.add(p);
     var c = new coin();
@@ -26,6 +28,7 @@ class game_world extends world {
     t.spawnLedge();
     t.score++;
     t.levelProgression();
+    t.coinSpawns();
   }
   render() {
     super.render();
@@ -65,6 +68,13 @@ class game_world extends world {
       if (this.ledgeSpeed > this.maxLedgeSpeed) {
         this.ledgeSpeed = this.maxLedgeSpeed;
       }
+    }
+  } //end level progression
+  coinSpawns() {
+    var t = this;
+    if (t.coinTimer.finished()) {
+      var c = new coin();
+      this.add(c);
     }
   }
 }

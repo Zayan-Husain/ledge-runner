@@ -6,12 +6,10 @@ class ground extends yentity {
     this.type = "ground";
     this.grafic_type = "none";
   } //end constructor
-
   update() {
     super.update();
     var t = this;
     t.move();
-
   } //end update
   move() {
     var t = this;

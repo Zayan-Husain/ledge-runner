@@ -11,6 +11,7 @@ class game_world extends world {
       navigator.userAgent
     );
     this.coinTimer = new ytimer(600);
+    this.image = loadImage("img/ph.jpg");
   }
 
   init() {
@@ -21,6 +22,9 @@ class game_world extends world {
     this.add(p);
     var c = new coin();
     this.add(c);
+    var gp = new power_up();
+    gp.power_up_type = "No Gravity";
+    this.add(gp);
   }
   update() {
     super.update();
@@ -43,16 +47,16 @@ class game_world extends world {
       for (let i = 0; i < r; i++) {
         var w = Math.random() * ((t.wh.w - 20) / 2) + 40;
         var x = Math.random() * t.wh.w;
-        var l = new ground(x, t.wh.h + 20);
+        var l = new ground(x, t.wh.h + 20, this.image);
+        this.image = loadImage("img/ph.jpg");
         l.speed = t.ledgeSpeed;
-        l.cwh(w);
 
         if (last_l && last_l.x > l.x) {
           t.remove(last_l);
         }
+        l.cwh(w);
 
         t.add(l);
-
         if (l.hit_test("ground", 0, 0)) {
           t.remove(l);
         }

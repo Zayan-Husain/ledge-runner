@@ -11,6 +11,10 @@ class player extends yentity {
     this.gravity = 1.6;
     this.vf = 0.5;
     this.hf = 0.95;
+    this.original_gravity = this.gravity;
+    this.power_up_timer = new ytimer(200);
+    this.power_up_type = "none";
+    this.power_up_start;
   } //end constructor
 
   update() {
@@ -21,6 +25,7 @@ class player extends yentity {
     t.adjustPosY();
     t.loseCondition();
     t.boundaries();
+    t.handlePowerups();
   } //end update
   move() {
     var t = this;
@@ -95,5 +100,31 @@ class player extends yentity {
       t.sx(t.w / 2);
     }
   } //end boundaries()
+  handlePowerups() {
+    var t = this;
+    if (t.power_up_start) {
+      if (t.power_up_type == "Higher Gravity") {
+        this.gravity = 2.3;
+      }
+      if (t.power_up_type == "Reverse Gravity") {
+        this.gravity = -0.7;
+      }
+      if (t.power_up_type == "No Gravity") {
+        this.gravity = 0;
+        t.speedy = 0;
+      }
+      if (t.power_up_timer.finished()) {
+        if (
+          t.power_up_type == "Higher Gravity" ||
+          t.power_up_type == "Reverse Gravity" ||
+          t.power_up_type == "No Gravity"
+        ) {
+          t.gravity = t.original_gravity;
+        }
+        this.power_up_timer = new ytimer(200);
+        this.power_up_start = false;
+      }
+    }
+  } //end handlePowerups()
 } //end class
 ///////////////end player///////////////////

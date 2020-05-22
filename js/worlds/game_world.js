@@ -41,22 +41,23 @@ class game_world extends world {
   spawnLedge() {
     var t = this;
     if (t.ledgeTimer.finished()) {
-      var r = Math.random() * 3;
+      var r = Math.random() * 2;
       var last_l;
       for (let i = 0; i < r; i++) {
         var w = Math.random() * ((t.wh.w - 20) / 2) + 40;
         var x = Math.random() * t.wh.w;
-        var l = new ground(x, t.wh.h + 20, this.image);
-        this.image = loadImage("img/ph.jpg");
+        var l = new ground(x, t.wh.h + 60, this.image);
+        l.cwh(w);//set sprite wh before you create next img
+		this.image = loadImage("img/ph.jpg");
         l.speed = t.ledgeSpeed;
-
+		//l.debug = true;
         if (last_l && last_l.x > l.x) {
           t.remove(last_l);
         }
-        l.cwh(w);
-
+       
         t.add(l);
-        if (l.hit_test("ground", 0, 0)) {
+       
+	   if (l.hit_test("ground", 0, 0)) {
           t.remove(l);
         }
 

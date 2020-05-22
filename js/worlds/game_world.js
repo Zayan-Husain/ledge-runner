@@ -12,6 +12,7 @@ class game_world extends world {
     );
     this.coinTimer = new ytimer(600);
     this.image = loadImage("img/ph.jpg");
+    this.powerupTimer = new ytimer(1400);
   }
 
   init() {
@@ -22,9 +23,7 @@ class game_world extends world {
     this.add(p);
     var c = new coin();
     this.add(c);
-    var gp = new power_up();
-    gp.power_up_type = "No Gravity";
-    this.add(gp);
+    this.addPowerUp();
   }
   update() {
     super.update();
@@ -73,6 +72,9 @@ class game_world extends world {
         this.ledgeSpeed = this.maxLedgeSpeed;
       }
     }
+    if (this.powerupTimer.finished()) {
+      this.addPowerUp();
+    }
   } //end level progression
   coinSpawns() {
     var t = this;
@@ -80,5 +82,26 @@ class game_world extends world {
       var c = new coin();
       this.add(c);
     }
+  }
+  addPowerUp() {
+    var gp = new power_up();
+    var r = Math.round(Math.random() * 3);
+    if (r != 3) {
+      r++;
+    } else {
+      r = Math.round(Math.random() * 3);
+    }
+    var powerup = "";
+    if (r == 1) {
+      powerup = "No Gravity";
+    }
+    if (r == 2) {
+      powerup = "Higher Gravity";
+    }
+    if (r == 3) {
+      powerup = "Reverse Gravity";
+    }
+    gp.power_up_type = powerup;
+    this.add(gp);
   }
 }

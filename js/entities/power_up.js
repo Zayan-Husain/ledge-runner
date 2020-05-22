@@ -4,6 +4,7 @@ class power_up extends yentity {
     var t = this;
     t.power_up_type = "Higher Gravity";
     this.grafic_type = "none";
+    this.zi = 999;
   }
   init() {
     super.init();

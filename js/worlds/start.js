@@ -3,6 +3,10 @@ class start extends world {
   constructor(name2, wh2) {
     super(name2);
     this.wh = wh2;
+    if (localStorage.getItem("high-score") === null) {
+      localStorage.setItem("high-score", 0);
+    }
+    this.highScore = localStorage.getItem("high-score");
   }
 
   init() {
@@ -11,6 +15,9 @@ class start extends world {
     var btn_start_img = loadImage("img/play.png");
     var btn_credits_img = loadImage("img/credits.png");
     //create btn entitys
+    var btn_reset_score_img = loadImage("img/resetHighScore.png");
+    t.btn_reset_score = new yentity(this.wh.w / 2, 55, btn_reset_score_img);
+    t.add(t.btn_reset_score);
     t.btn_start = new yentity(this.wh.w / 2, 200, btn_start_img);
     t.btn_credits = new yentity(this.wh.w / 2, 300, btn_credits_img);
 
@@ -24,12 +31,22 @@ class start extends world {
     //add btns
     t.add(t.btn_start);
     t.add(t.btn_credits);
+    this.highScore = localStorage.getItem("high-score");
+  }
+  render() {
+    this.ytext(this.wh.w / 2, 22, "Highest Score: " + this.highScore);
   }
   update() {
     super.update();
     var t = this;
+    t.btn_reset_score.sethb_wh(170, 25); //set hitbox width height
+    t.btn_reset_score.set_wh(170, 25); //set hitbox width height
 
-    //if start clicked
+    //if buttons clicked
+    if (t.btn_reset_score.clicked(2)) {
+      localStorage.setItem("high-score", 0);
+      this.highScore = 0;
+    }
     if (t.btn_start.clicked(2)) {
       t.change_world("game_world", true);
     }

@@ -3,6 +3,7 @@ class game_over extends world {
   constructor(name2, wh2) {
     super(name2);
     this.wh = wh2;
+    this.newHighScoreTxt = "";
   }
 
   init() {
@@ -14,6 +15,8 @@ class game_over extends world {
     t.btn_start = new yentity(this.wh.w / 2, 175, btn_start_img);
     t.btn_start.sethb_wh(200, 30); //set hitbox width height
     t.add(t.btn_start);
+    this.newHighScoreTxt = "";
+    this.newHighScore();
   }
   update() {
     super.update();
@@ -22,7 +25,12 @@ class game_over extends world {
       this.change_world("start", true);
     }
   }
-
+  newHighScore() {
+    if (localStorage.getItem("high-score") < this.score) {
+      localStorage.setItem("high-score", this.score);
+      this.newHighScoreTxt = "New High Score!";
+    }
+  }
   render() {
     super.render();
     textSize(30);
@@ -33,6 +41,7 @@ class game_over extends world {
       this.wh.h / 2 + 22,
       "Your score is " + this.score
     );
+    this.ytext(this.wh.w / 2, 22, this.newHighScoreTxt);
   } //end render
 } //end world class
 ///////////////end game_over world///////////////////

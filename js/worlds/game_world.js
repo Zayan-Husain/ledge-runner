@@ -11,8 +11,10 @@ class game_world extends world {
       navigator.userAgent
     );
     this.coinTimer = new ytimer(600);
-    this.image = loadImage("img/ph.jpg");
-    this.powerupTimer = new ytimer(1400);
+    this.textures = ["ph1.jpg", "ph2.jpg", "ph3.jpg"];
+    this.currentImage = 0;
+    this.image = loadImage("img/" + this.textures[this.currentImage]);
+    this.powerupTimer = new ytimer(400);
   }
 
   init() {
@@ -24,6 +26,9 @@ class game_world extends world {
     var c = new coin();
     this.add(c);
     this.addPowerUp();
+    this.currentImage = 0;
+    this.ledgeSpeed = 2;
+    this.ledgeSpeedTimer = new ytimer(800);
   }
   update() {
     super.update();
@@ -47,17 +52,17 @@ class game_world extends world {
         var w = Math.random() * ((t.wh.w - 20) / 2) + 40;
         var x = Math.random() * t.wh.w;
         var l = new ground(x, t.wh.h + 60, this.image);
-        l.cwh(w);//set sprite wh before you create next img
-		this.image = loadImage("img/ph.jpg");
+        l.cwh(w); //set sprite wh before you create next img
+        this.image = loadImage("img/" + this.textures[this.currentImage]);
         l.speed = t.ledgeSpeed;
-		//l.debug = true;
+        //l.debug = true;
         if (last_l && last_l.x > l.x) {
           t.remove(last_l);
         }
-       
+
         t.add(l);
-       
-	   if (l.hit_test("ground", 0, 0)) {
+
+        if (l.hit_test("ground", 0, 0)) {
           t.remove(l);
         }
 
@@ -69,6 +74,10 @@ class game_world extends world {
     var t = this;
     if (this.ledgeSpeedTimer.finished()) {
       this.ledgeSpeed += 0.5;
+      t.currentImage++;
+      if (t.currentImage > t.textures.length - 1) {
+        t.currentImage = t.textures.length - 1;
+      }
       if (this.ledgeSpeed > this.maxLedgeSpeed) {
         this.ledgeSpeed = this.maxLedgeSpeed;
       }
@@ -87,10 +96,8 @@ class game_world extends world {
   addPowerUp() {
     var gp = new power_up();
     var r = Math.round(Math.random() * 3);
-    if (r != 3) {
+    if (r == 0) {
       r++;
-    } else {
-      r = Math.round(Math.random() * 3);
     }
     var powerup = "";
     if (r == 1) {
